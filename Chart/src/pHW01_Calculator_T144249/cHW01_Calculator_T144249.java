@@ -48,7 +48,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	int x = 0, y = 0;
 	double dMemory = 0, dNumber1, dNumber2, dNumber3;
 	boolean fAppend = false;
-	String sOperator;
+	String sHandling;
 
 	public void initializeMenu() {
 		mnbBar = new JMenuBar();
@@ -140,8 +140,8 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		btnStandards[5][3].setVisible(false);
 	}
 
-	public void initHandling() { //hàm xử lý 
-		// add acctionlistener cho các số 
+	public void initHandling() { //
+		// them so vao man hinh  
 		ActionListener actNumber = new ActionListener() {
 
 			@Override
@@ -150,12 +150,16 @@ public class cHW01_Calculator_T144249 extends JFrame {
 				JButton btnNumber = (JButton) argO.getSource();
 				String sNumber = btnNumber.getText();
 				String sCurrentNumber = txtResult.getText();
-				if (sCurrentNumber.equals("0")) {
+				if ( fAppend == true) { //rs lai so
+					if (sCurrentNumber.equals("0")) {
+						txtResult.setText(sNumber);
+					} else {
+						txtResult.setText(sCurrentNumber + sNumber);
+					}
+				}else{
 					txtResult.setText(sNumber);
-				} else {
-					txtResult.setText(sCurrentNumber + sNumber);
+					fAppend = false;
 				}
-				fAppend = false;
 			}
 		};
 		for (int i = 2; i < 5; i++) {
@@ -193,46 +197,21 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			btnStandards[0][j].addActionListener(actMemory);
 		}
 		
-		ActionListener actOperator = new ActionListener() {
-			
+		ActionListener actCal = new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JButton btnOper = (JButton) e.getSource();
+				JButton btnCal = (JButton) e.getSource();
 				dNumber1 = Double.parseDouble(txtResult.getText());
-				sOperator = btnOper.getText();
+				sHandling = btnCal.getText();
 				fAppend = false;
 			}
 		};
-		btnStandards[2][1].addActionListener(actOperator);
-		
-		ActionListener checkNumber = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				JButton btnNumber = (JButton) arg0.getSource();
-				String sNumber = btnNumber.getText();
-				String sCurrent = txtResult.getText();
-				if (fAppend == true) {
-					if (sCurrent.equals(0)) {
-						txtResult.setText(sNumber);
-					} else {
-						txtResult.setText(sCurrent + sNumber);
-					}
-				} else {
-					txtResult.setText(sNumber);
-					fAppend = true;
-				}
-			}
-		};
-		for (int i = 2; i < 5; i++) {
-			for (int j = 0; j < 3; j++) {
-				btnStandards[i][j].addActionListener(checkNumber);
-			}
-		}
-		btnStandards[5][0].addActionListener(checkNumber);
-		
+		btnStandards[5][2].addActionListener(actCal);
+		btnStandards[4][3].addActionListener(actCal);
+		btnStandards[3][3].addActionListener(actCal);
+		btnStandards[2][3].addActionListener(actCal);
 	}
 
 	public void exitProgram() {
