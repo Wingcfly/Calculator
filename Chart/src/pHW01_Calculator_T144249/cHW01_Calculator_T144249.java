@@ -32,13 +32,10 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	JMenuBar mnbBar;
 	JMenu mnEdit, mnHelp, mnView;
 	JMenuItem mniStandard, mniExit, mniScientific, mniProgrammer, mniCopy, mniPaste, mniAbout;
-	JTextField txtResult = new JTextField();
-	JScrollPane scrPage;
-	String[][] sNameStan = { { "MC", "MR", "MS", "M+", "M-" },
-			{ "<-", "CE", "C", "+/-", "x^1/2" },
-			{ "7", "8", "9", "/", "%" },
-			{ "4", "5", "6", "*", "1/x" },
-			{ "1", "2", "3", "-", "=" },
+	JTextField txtResult = new JTextField("0");
+	JScrollPane scrPage = new JScrollPane(txtResult);
+	String[][] sNameStan = { { "MC", "MR", "MS", "M+", "M-" }, { "<-", "CE", "C", "+/-", "x^1/2" },
+			{ "7", "8", "9", "/", "%" }, { "4", "5", "6", "*", "1/x" }, { "1", "2", "3", "-", "=" },
 			{ "0", ".", "+", "", "" } };
 	JButton[][] btnStandards = new JButton[6][5];
 	JPanel panStandards = new JPanel();
@@ -46,9 +43,9 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	JPanel panProgrammer = new JPanel();
 	int w = 50, h = 50, d = 5;
 	int x = 0, y = 0;
-	double dMemory = 0, dNumber1, dNumber2, dNumber3;
+	double dMemory = 0, dNumber1 = 0, dNumber2, result;
 	boolean fAppend = false;
-	String sHandling;
+	String sHandling, sCal = "";
 
 	public void initializeMenu() {
 		mnbBar = new JMenuBar();
@@ -83,7 +80,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		txtResult.setFont(new Font(font.getName(), Font.BOLD, font.getSize() + 14));
 		txtResult.setHorizontalAlignment(JTextField.RIGHT);
 
-		add(txtResult);
+		add(scrPage);
 		add(panStandards);
 		panStandards.setLayout(null);
 
@@ -115,8 +112,8 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		mniAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.ALT_MASK));
 	}
 
-	public void initStandards() { //panel của Standards 
-		txtResult.setBounds(10, 10, 270, 80);
+	public void initStandards() { // panel của Standards
+		scrPage.setBounds(10, 10, 270, 80);
 		panStandards.setBounds(10, 100, 300, 330);
 		Insets sM = new Insets(1, 1, 1, 1);
 		this.setSize(290, 480);
@@ -141,7 +138,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	}
 
 	public void initHandling() { //
-		// them so vao man hinh  
+		// them so vao man hinh
 		ActionListener actNumber = new ActionListener() {
 
 			@Override
@@ -150,15 +147,15 @@ public class cHW01_Calculator_T144249 extends JFrame {
 				JButton btnNumber = (JButton) argO.getSource();
 				String sNumber = btnNumber.getText();
 				String sCurrentNumber = txtResult.getText();
-				if ( fAppend == true) { //rs lai so
-					if (sCurrentNumber.equals("0")) {
+				if (fAppend == true) { // rs lai so
+					if (sCurrentNumber.equals("0") || sCurrentNumber.equals("-")) {
 						txtResult.setText(sNumber);
 					} else {
 						txtResult.setText(sCurrentNumber + sNumber);
 					}
-				}else{
+				} else {
 					txtResult.setText(sNumber);
-					fAppend = false;
+					fAppend = true;
 				}
 			}
 		};
@@ -168,6 +165,98 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			}
 		}
 		btnStandards[5][0].addActionListener(actNumber);
+
+		btnStandards[1][3].addActionListener(new ActionListener() { // them dau tru`
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JButton btnAdd = (JButton) e.getSource();
+				sCal = btnAdd.getText();
+				if (sCal.equals("-")) {
+
+				}
+			}
+		});
+
+		ActionListener actCongTru = new ActionListener() { // them dau tru o
+															// truoc so
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JButton btnCal = (JButton) e.getSource();
+				sCal = btnCal.getText();
+				if (sCal.equals("-")) {
+					txtResult.setText("-");
+				}
+				fAppend = true;
+			}
+		};
+		btnStandards[4][3].addActionListener(actCongTru);
+
+		btnStandards[1][2].addActionListener(new ActionListener() { // nut C de
+																	// reset
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtResult.setText("0");
+			}
+		});
+
+		ActionListener actCal = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JButton btnCal = (JButton) e.getSource();
+				dNumber1 = Double.parseDouble(txtResult.getText());
+				sCal = btnCal.getText();
+				fAppend = false;
+			}
+		};
+		btnStandards[5][2].addActionListener(actCal);
+		btnStandards[4][3].addActionListener(actCal);
+		btnStandards[3][3].addActionListener(actCal);
+		btnStandards[2][3].addActionListener(actCal);
+
+		ActionListener acEqual = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (sCal.equals("+")) {
+					dNumber2 = Double.parseDouble(txtResult.getText());
+					result = dNumber1 + dNumber2;
+					String s = String.valueOf(result);
+					txtResult.setText(String.format("%.4s", s));
+					fAppend = false;
+				}
+				if (sCal.equals("-")) {
+					dNumber2 = Double.parseDouble(txtResult.getText());
+					result = dNumber1 - dNumber2;
+					String s = String.valueOf(result);
+					txtResult.setText(String.format("%.4s", s));
+					fAppend = false;
+				}
+				if (sCal.equals("*")) {
+					dNumber2 = Double.parseDouble(txtResult.getText());
+					result = dNumber1 * dNumber2;
+					String s = String.valueOf(result);
+					txtResult.setText(String.format("%.4s", s));
+					fAppend = false;
+				}
+				if (sCal.equals("/")) {
+					dNumber2 = Double.parseDouble(txtResult.getText());
+					result = dNumber1 / dNumber2;
+					String s = String.valueOf(result);
+					txtResult.setText(String.format("%.4s", s));
+					fAppend = false;
+				}
+			}
+		};
+		btnStandards[4][4].addActionListener(acEqual);
 
 		// luu so vao ben trong bo nho
 		ActionListener actMemory = new ActionListener() {
@@ -196,22 +285,6 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		for (int j = 0; j < 3; j++) {
 			btnStandards[0][j].addActionListener(actMemory);
 		}
-		
-		ActionListener actCal = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JButton btnCal = (JButton) e.getSource();
-				dNumber1 = Double.parseDouble(txtResult.getText());
-				sHandling = btnCal.getText();
-				fAppend = false;
-			}
-		};
-		btnStandards[5][2].addActionListener(actCal);
-		btnStandards[4][3].addActionListener(actCal);
-		btnStandards[3][3].addActionListener(actCal);
-		btnStandards[2][3].addActionListener(actCal);
 	}
 
 	public void exitProgram() {
