@@ -188,7 +188,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		panBox.add(optDegrees, BorderLayout.WEST);
 		panBox.add(optRadians, BorderLayout.CENTER);
 		panBox.add(optGrads, BorderLayout.EAST);
-		panBox.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+		panBox.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); //vien` panbox
 		y = 0;
 		for (int i = 0; i < 5; i++) {
 			x = 0;
