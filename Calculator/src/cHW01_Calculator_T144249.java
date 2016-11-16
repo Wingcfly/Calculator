@@ -106,15 +106,6 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		add(optDegrees);
 		add(optGrads);
 		add(optRadians);
-		btgScientific.add(optDegrees);
-		btgScientific.add(optGrads);
-		btgScientific.add(optRadians);
-		optDegrees.setSelected(true);
-		panBox.setLayout(new BorderLayout(14, 10));
-		panBox.setBounds(10, 100, 270, 50);
-		panBox.add(optDegrees, BorderLayout.WEST);
-		panBox.add(optRadians, BorderLayout.CENTER);
-		panBox.add(optGrads, BorderLayout.EAST);
 
 		Font font = txtResult.getFont();
 		txtResult.setFont(new Font(font.getName(), Font.BOLD, font.getSize() + 14));
@@ -188,6 +179,16 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	}
 	
 	public void initScientific() { //panel cua Scientific
+		btgScientific.add(optDegrees);
+		btgScientific.add(optGrads);
+		btgScientific.add(optRadians);
+		optDegrees.setSelected(true);
+		panBox.setLayout(new BorderLayout(14, 10));
+		panBox.setBounds(10, 100, 270, 50);
+		panBox.add(optDegrees, BorderLayout.WEST);
+		panBox.add(optRadians, BorderLayout.CENTER);
+		panBox.add(optGrads, BorderLayout.EAST);
+		panBox.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
 		y = 0;
 		for (int i = 0; i < 5; i++) {
 			x = 0;
