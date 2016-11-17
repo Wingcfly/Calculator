@@ -10,6 +10,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -61,10 +64,20 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	JPanel panStandards = new JPanel(),
 			panScientific = new JPanel(),
 			panProgrammer = new JPanel(),
-			panBox = new JPanel();
+			panBoxScientific = new JPanel(),
+			panBoxProgrammer1 = new JPanel(),
+			panBoxProgrammer2 = new JPanel();
 	JRadioButton optDegrees = new JRadioButton("Degrees"),
 			optRadians = new JRadioButton("Radians"),
 			optGrads = new JRadioButton("Grads");
+	JRadioButton optHex = new JRadioButton("Hex"),
+			optDec = new JRadioButton("Dec"),
+			optOct = new JRadioButton("Oct"),
+			optBin = new JRadioButton("Bin"),
+			optQword = new JRadioButton("Qword"),
+			optDword = new JRadioButton("Dword"),
+			optWord = new JRadioButton("Word"),
+			optByte = new JRadioButton("Byte");
 	ButtonGroup btgScientific = new ButtonGroup();
 	int w = 50, h = 50, d = 5;
 	int x = 0, y = 0;
@@ -93,8 +106,8 @@ public class cHW01_Calculator_T144249 extends JFrame {
 
 		// add Menu Item
 		mnView.add(mniStandard);
-		mnView.add(mniProgrammer);
 		mnView.add(mniScientific);
+		mnView.add(mniProgrammer);
 		mnView.addSeparator();
 		mnView.add(mniExit);
 		mnEdit.add(mniCopy);
@@ -102,7 +115,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		mnHelp.add(mniAbout);
 		setJMenuBar(mnbBar);
 		
-		add(panBox);
+		add(panBoxScientific);
 		add(optDegrees);
 		add(optGrads);
 		add(optRadians);
@@ -141,6 +154,15 @@ public class cHW01_Calculator_T144249 extends JFrame {
 				}
 			}
 		};
+		
+		this.addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				exitProgram();
+			}
+		});
 		mniExit.addActionListener(action);
 		mniStandard.addActionListener(action);
 		mniProgrammer.addActionListener(action);
@@ -174,21 +196,22 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		btnStandards[5][2].setLocation(w + d + w + d + w + d, y - h - d);
 		btnStandards[5][4].setVisible(false);
 		btnStandards[5][3].setVisible(false);
+		btnStandards[2][4].setEnabled(false);
 		this.add(panStandards);
 		initDisplay(1);
 	}
 	
 	public void initScientific() { //panel cua Scientific
+		optGrads.setEnabled(false);
 		btgScientific.add(optDegrees);
-		btgScientific.add(optGrads);
 		btgScientific.add(optRadians);
 		optDegrees.setSelected(true);
-		panBox.setLayout(new BorderLayout(14, 10));
-		panBox.setBounds(10, 100, 270, 50);
-		panBox.add(optDegrees, BorderLayout.WEST);
-		panBox.add(optRadians, BorderLayout.CENTER);
-		panBox.add(optGrads, BorderLayout.EAST);
-		panBox.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); //vien` panbox
+		panBoxScientific.setLayout(new BorderLayout(14, 10));
+		panBoxScientific.setBounds(10, 100, 270, 50);
+		panBoxScientific.add(optDegrees, BorderLayout.WEST);
+		panBoxScientific.add(optRadians, BorderLayout.CENTER);
+		panBoxScientific.add(optGrads, BorderLayout.EAST);
+		panBoxScientific.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); //vien` panbox
 		y = 0;
 		for (int i = 0; i < 5; i++) {
 			x = 0;
@@ -202,20 +225,23 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			y = y + h + d;
 		}
 		this.add(panScientific);
+		btnScientific[0][0].setEnabled(false);
+		btnScientific[0][1].setEnabled(false);
+		btnScientific[0][3].setEnabled(false);
+		btnScientific[0][4].setEnabled(false);
 		initDisplay(2);
 	}
 	
 	public void initProgramer(){
-		/*panPr00.add(hex);
-		panPr00.add(dec);
-		panPr00.add(oct);
-		panPr00.add(bin);
-		panPr00.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-		panPr01.add(qword);
-		panPr01.add(dword);
-		panPr01.add(word);
-		panPr01.add(bit);
-		panPr01.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));*/
+		add(panBoxProgrammer1);
+		add(panBoxProgrammer2);
+		panBoxProgrammer1.add(optHex);
+		panBoxProgrammer1.add(optDec);
+		panBoxProgrammer1.add(optOct);
+		panBoxProgrammer1.add(optBin);
+		panBoxProgrammer1.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		panBoxProgrammer1.setLayout(new BorderLayout(14, 10));
+		panBoxProgrammer1.setBounds(10, 100, 50, 270);
 		y = 0;
 		for (int i = 0; i < 6; i++) {
 			x = 0;
@@ -233,7 +259,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	}
 	
 	public void initDisplay(int mode) {
-		if (mode == 2) {
+		if (mode == 2) { //scientific view
 			panProgrammer.setVisible(false);
 			panScientific.setVisible(true);
 			panStandards.setVisible(true);
@@ -243,29 +269,27 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			panStandards.setBounds(285, 100, 300, 330);
 			this.setSize(570, 480);
 			scrPage.setBounds(10, 10, 545, 80);
-			panBox.setVisible(true);
-		} else if (mode == 1) {
+			panBoxScientific.setVisible(true);
+		} else if (mode == 1) { //standards view
 			panScientific.setVisible(false);
 			panProgrammer.setVisible(false);
 			panStandards.setVisible(true);
 			panStandards.setLayout(null);
+			panBoxProgrammer1.setVisible(false);
 			this.setSize(290, 480);
 			scrPage.setBounds(10, 10, 270, 80);
 			panStandards.setBounds(10, 100, 270, 330);
-			panBox.setVisible(false);
-		} else if (mode == 3) {
+			panBoxScientific.setVisible(false);
+		} else if (mode == 3) { //programmer view
 			panScientific.setVisible(false);
 			panStandards.setVisible(true);
-			// box.setVisible(false);
-			/*panPr00.setSize(80, 140);
-			panPr00.setLocation(10,200);
-			panPr00.setVisible(true);
-			panPr01.setSize(80, 140);
-			panPr01.setLocation(10, 350);
-			panPr01.setVisible(true);*/
-			scrPage.setBounds(10, 10, w + 450, h + 40);
 			panProgrammer.setVisible(true);
-			panProgrammer.setBounds(10, 100, x, y);
+			panProgrammer.setLayout(null);
+			panStandards.setLayout(null);
+			panBoxScientific.setVisible(false);
+			scrPage.setBounds(10, 10, w + 450, h + 40);
+			panBoxProgrammer1.setBounds(10, 100, x, y);
+			//panProgrammer.setBounds(10, 100, x, y);
 			panStandards.setBounds(260, 100, x , y);
 			this.setSize(520, 480);
 		}
@@ -444,6 +468,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		this.setTitle("T144249 – Calculator");
 		this.setLocationRelativeTo(null);
 		this.setLayout(null);
+		this.setLocationRelativeTo(null);
 
 		initializeMenu();
 		initHandling();
