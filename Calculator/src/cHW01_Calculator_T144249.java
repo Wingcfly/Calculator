@@ -1,8 +1,6 @@
 /**
  * 
  */
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -129,6 +127,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		Font font = txtResult.getFont();
 		txtResult.setFont(new Font(font.getName(), Font.BOLD, font.getSize() + 14));
 		txtResult.setHorizontalAlignment(JTextField.RIGHT);
+		txtResult.setForeground(Color.BLUE);
 
 		add(scrPage);
 		add(panStandards);
@@ -539,26 +538,42 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				dNumber1 = Double.parseDouble(txtResult.getText());
 				JButton btnHandling = (JButton) e.getSource();
 				String sFunction = btnHandling.getText();
 				if (sFunction.equals("log")){
 					result = Math.log10(dNumber1);
 					txtResult.setText(""+result);
 				}
+				if (sFunction.equals("ln")){
+					result = Math.log(dNumber1);
+					txtResult.setText(String.format("%.4f", result));
+				}
+				if (sFunction.equals("Int")){
+					int a = (int) dNumber1;
+					txtResult.setText(""+a);
+				}
+				if (sFunction.equals("sinh")){
+					result = (Math.pow(Math.E, dNumber1) - Math.pow(Math.E, -dNumber1))/2;
+					txtResult.setText(""+result);
+				}
 			}
 		};
 		btnScientific[4][3].addActionListener(actScientific);
+		btnScientific[0][2].addActionListener(actScientific);
+		btnScientific[1][0].addActionListener(actScientific);
+		btnScientific[1][1].addActionListener(actScientific);
 	}
 
-	public void exitProgram() {
-		int res = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Yes",
+	public void exitProgram() { //exit chuong trinh
+		int res = JOptionPane.showConfirmDialog(null, "Are you sure?", "Yes",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (res == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
 	}
 
-	public cHW01_Calculator_T144249() {
+	public cHW01_Calculator_T144249() { //class chinh
 		this.setTitle("T144249 – Calculator");
 		this.setLocationRelativeTo(null);
 		this.setLayout(null);
