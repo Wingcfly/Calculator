@@ -5,6 +5,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -42,15 +43,15 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	JTextField txtResult = new JTextField("0");
 	JScrollPane scrPage = new JScrollPane(txtResult);
 	String[][] sNameStan = { { "MC", "MR", "MS", "M+", "M-" },
-			{ "<-", "CE", "C", "+/-", "x^1/2" },
+			{ "<-", "CE", "C", "+/-", "√" },
 			{ "7", "8", "9", "/", "%" },
 			{ "4", "5", "6", "*", "1/x" },
 			{ "1", "2", "3", "-", "=" },
 			{ "0", ".", "+", "", "" } };
 	String[][] sScientific = { { "", "Inv", "ln", "(", ")", },
-			{ "Int", "sinh", "sin", "x^2", "n!" },
+			{ "Int", "sinh", "sin", "x²", "n!" },
 			{ "dms", "cosh", "cos", "x^y", "x^1/y" },
-			{ "PI", "tanh", "tan", "x^3", "x^1/3" },
+			{ "π", "tanh", "tan", "x³", "³√x" },
 			{ "F-E", "Exp", "Mod", "log", "10^x" } };
 	String[][] sProgram = { { "", "Mod", "A", },
 			{ "(", ")", "B" },
@@ -78,9 +79,12 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			optDword = new JRadioButton("Dword"),
 			optWord = new JRadioButton("Word"),
 			optByte = new JRadioButton("Byte");
-	ButtonGroup btgScientific = new ButtonGroup();
+	ButtonGroup btgScientific = new ButtonGroup(),
+			btgProgrammer1 = new ButtonGroup(),
+			btgProgrammer2 = new ButtonGroup();
 	int w = 50, h = 50, d = 5;
 	int x = 0, y = 0;
+	int lText;
 	double dMemory = 0, dNumber1=0, dNumber2, result;
 	boolean fAppend = false;
 	String sHandling, sCal = "";
@@ -116,6 +120,8 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		setJMenuBar(mnbBar);
 		
 		add(panBoxScientific);
+		add(panBoxProgrammer1);
+		add(panBoxProgrammer2);
 		add(optDegrees);
 		add(optGrads);
 		add(optRadians);
@@ -132,6 +138,8 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		initStandards();
 		initScientific();
 		initProgramer();
+		
+		txtResult.setEditable(false);
 		
 		initDisplay(1); //bat dau chay chuong trinh se chay Standards
 
@@ -233,15 +241,35 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	}
 	
 	public void initProgramer(){
-		add(panBoxProgrammer1);
-		add(panBoxProgrammer2);
+		//box 1 trong programmer
+		panBoxProgrammer1.setBounds(10, 100, 80, 150); 
+		panBoxProgrammer1.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panBoxProgrammer1.add(optHex);
-		panBoxProgrammer1.add(optDec);
 		panBoxProgrammer1.add(optOct);
+		panBoxProgrammer1.add(optDec);
 		panBoxProgrammer1.add(optBin);
+		btgProgrammer1.add(optHex);
+		btgProgrammer1.add(optOct);
+		btgProgrammer1.add(optDec);
+		btgProgrammer1.add(optBin);
+		optHex.setSelected(true);
 		panBoxProgrammer1.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-		panBoxProgrammer1.setLayout(new BorderLayout(14, 10));
-		panBoxProgrammer1.setBounds(10, 100, 50, 270);
+		
+		//box 2 trong programmer
+		panBoxProgrammer2.setBounds(10, 270, 80, 150);
+		panBoxProgrammer2.setLayout(new FlowLayout(FlowLayout.LEFT));
+		panBoxProgrammer2.add(optQword);
+		panBoxProgrammer2.add(optDword);
+		panBoxProgrammer2.add(optWord);
+		panBoxProgrammer2.add(optByte);
+		btgProgrammer2.add(optQword);
+		btgProgrammer2.add(optDword);
+		btgProgrammer2.add(optWord);
+		btgProgrammer2.add(optByte);
+		optQword.setSelected(true);
+		panBoxProgrammer2.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		
+		//khai bao va nhap cac button vao programmer
 		y = 0;
 		for (int i = 0; i < 6; i++) {
 			x = 0;
@@ -254,6 +282,13 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			}
 			y = y + h + d;
 		}
+		btnProgrammer[0][0].setEnabled(false);
+		btnProgrammer[1][0].setEnabled(false);
+		btnProgrammer[1][1].setEnabled(false);
+		btnProgrammer[3][0].setEnabled(false);
+		btnProgrammer[3][1].setEnabled(false);
+		btnProgrammer[4][0].setEnabled(false);
+		btnProgrammer[4][1].setEnabled(false);
 		this.add(panProgrammer);
 		initDisplay(3);
 	}
@@ -266,32 +301,36 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			panScientific.setLayout(null);
 			panStandards.setLayout(null);
 			panScientific.setBounds(10, 155, 270, 400);
-			panStandards.setBounds(285, 100, 300, 330);
+			panStandards.setBounds(290, 100, 300, 330);
 			this.setSize(570, 480);
-			scrPage.setBounds(10, 10, 545, 80);
+			scrPage.setBounds(10, 10, 550, 80);
 			panBoxScientific.setVisible(true);
+			panBoxProgrammer1.setVisible(false);
+			panBoxProgrammer2.setVisible(false);
 		} else if (mode == 1) { //standards view
 			panScientific.setVisible(false);
 			panProgrammer.setVisible(false);
 			panStandards.setVisible(true);
 			panStandards.setLayout(null);
-			panBoxProgrammer1.setVisible(false);
 			this.setSize(290, 480);
 			scrPage.setBounds(10, 10, 270, 80);
 			panStandards.setBounds(10, 100, 270, 330);
 			panBoxScientific.setVisible(false);
+			panBoxProgrammer1.setVisible(false);
+			panBoxProgrammer2.setVisible(false);
 		} else if (mode == 3) { //programmer view
+			this.setSize(555, 480);
 			panScientific.setVisible(false);
 			panStandards.setVisible(true);
 			panProgrammer.setVisible(true);
 			panProgrammer.setLayout(null);
 			panStandards.setLayout(null);
 			panBoxScientific.setVisible(false);
-			scrPage.setBounds(10, 10, w + 450, h + 40);
-			panBoxProgrammer1.setBounds(10, 100, x, y);
-			//panProgrammer.setBounds(10, 100, x, y);
-			panStandards.setBounds(260, 100, x , y);
-			this.setSize(520, 480);
+			scrPage.setBounds(10, 10, 530, 80);
+			panBoxProgrammer1.setVisible(true);
+			panBoxProgrammer2.setVisible(true);
+			panProgrammer.setBounds(100, 100, x, y);
+			panStandards.setBounds(270, 100, 270, 330);
 		}
 	}
 
@@ -350,14 +389,22 @@ public class cHW01_Calculator_T144249 extends JFrame {
 					fAppend = false;
 					sCal = "";
 				}
-				if (sCal.equals("x^1/2")){
-					result = Math.pow(dNumber1, 0.5);
+				if (sCal.equals("√")){
+					result = Math.sqrt(dNumber1);
 					txtResult.setText(String.format("%.4s", result));
 					fAppend = false;
 					sCal = "";
 				}
-				if (sCal.equals("%")){
-					
+				if (sCal.equals("+/-")){
+					if (dNumber1 < 0){
+						dNumber1 = dNumber1*-1;
+						txtResult.setText(""+dNumber1);
+					}else if(dNumber1 > 0){
+						dNumber1 = dNumber1*-1;
+						txtResult.setText(""+dNumber1);
+					}
+					fAppend = false;
+					sCal = "";
 				}
 				if (sCal.equals("M+")){
 					result = dMemory + dNumber1;
@@ -371,6 +418,34 @@ public class cHW01_Calculator_T144249 extends JFrame {
 					fAppend = false;
 					sCal = "";
 				}
+				if (sCal.equals("<-")) {
+					String sText = txtResult.getText();
+					String subText;
+					lText = sText.length();
+					int count = txtResult.getText().length();
+					if (lText > 1) {
+						subText = sText.substring(0, lText - 1);
+						txtResult.setText(subText);
+					} else if (lText == 1) {
+						txtResult.setText("0");
+						fAppend = false;
+					}
+				}
+				if (sCal.equals(".")) {
+					String sText = txtResult.getText();
+					int count = 0;
+					for (int i = 0; i < sText.length(); i++) {
+						char cCheck = sText.charAt(i);
+						if (cCheck == '.') {
+							count++;
+						}
+					}
+					if (count == 0) {
+						sText += ".";
+						txtResult.setText(sText);
+						fAppend = true;
+					}
+				}
 			}
 		};
 		btnStandards[5][2].addActionListener(actCal);
@@ -381,6 +456,9 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		btnStandards[1][4].addActionListener(actCal);
 		btnStandards[0][3].addActionListener(actCal);
 		btnStandards[0][4].addActionListener(actCal);
+		btnStandards[1][0].addActionListener(actCal);
+		btnStandards[1][3].addActionListener(actCal);
+		btnStandards[5][1].addActionListener(actCal);
 
 		ActionListener acEqual = new ActionListener() {
 
@@ -435,7 +513,6 @@ public class cHW01_Calculator_T144249 extends JFrame {
 				// TODO Auto-generated method stub
 				JButton btnMem = (JButton) e.getSource();
 				String sFunction = btnMem.getText();
-
 				if (sFunction.equals("MS")) {
 					// memory store
 					dMemory = Double.parseDouble(txtResult.getText());
@@ -454,12 +531,29 @@ public class cHW01_Calculator_T144249 extends JFrame {
 		for (int j = 0; j < 3; j++) {
 			btnStandards[0][j].addActionListener(actMemory);
 		}
+			
+			
+		//xu ly panScientific
+		ActionListener actScientific = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JButton btnHandling = (JButton) e.getSource();
+				String sFunction = btnHandling.getText();
+				if (sFunction.equals("log")){
+					result = Math.log10(dNumber1);
+					txtResult.setText(""+result);
+				}
+			}
+		};
+		btnScientific[4][3].addActionListener(actScientific);
 	}
 
 	public void exitProgram() {
-		int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the program?", "Comfirm",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (result == JOptionPane.YES_OPTION) {
+		int res = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Yes",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (res == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
 	}
@@ -480,7 +574,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		cHW01_Calculator_T144249 mainWindow = new cHW01_Calculator_T144249();
-		mainWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		mainWindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		mainWindow.setVisible(true);
 	}
 
