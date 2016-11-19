@@ -48,7 +48,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 			{ "0", ".", "+", "", "" } };
 	String[][] sScientific = { { "", "Inv", "ln", "(", ")", },
 			{ "Int", "sinh", "sin", "x^2", "n!" },
-			{ "dms", "cosh", "cos", "x^y", "x√y" },
+			{ "dms", "cosh", "cos", "x^y", "y√x" },
 			{ "π", "tanh", "tan", "x^3", "3√x" },
 			{ "F-E", "Exp", "Mod", "log", "10^x" } };
 	String[][] sProgram = { { "", "Mod", "A", },
@@ -628,7 +628,7 @@ public class cHW01_Calculator_T144249 extends JFrame {
 					fAppend = false;
 					sCal = "";
 				}
-				if (sCal.equals("x√y")) {
+				if (sCal.equals("y√x")) {
 					dNumber2 = Double.parseDouble(txtResult.getText());
 					result = Math.pow(dNumber2, 1/dNumber1);
 					filterResult(result);
